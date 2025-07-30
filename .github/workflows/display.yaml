@@ -1,0 +1,64 @@
+name: display-environment
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - feature/*
+  pull_request:
+    branches:
+      - main
+
+env:
+  display-environment: "display-environment-rg"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Login to Azure
+        uses: azure/login@v2.3.0
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Set up Azure CLI
+        uses: azure/cli@v1
+        with:
+          azcliversion: 2.30.0
+          inlineScript: |
+            az account list --output table
+
+      - name: Install Bicep CLI
+        run: |
+          az bicep install
+
+      - name: display Environment secrets
+        run: |
+          echo "Display Environment Resource Group: ${{ secrets.STAGE_SEC }}"
+
+      - name: display repository secrets
+        run: |
+          echo "Display Repository Secrets: ${{ secrets.AZURE_CLIENT_ID }}"
+
+          - name: display environment variables
+          run: |
+            echo "Diaplay environment variables: ${{ vars.STAGE_VAR}}"
+
+      # Deploy Bicep Template
+      # - name: Deploy Bicep Template
+      #   run: |
+      #     az deployment group create \
+      #         --resource-group ${{ env.display-environment }} \
+      #         --template-file main.bicep \
+      #         --parameters @main.parameters.json
