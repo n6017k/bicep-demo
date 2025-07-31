@@ -56,9 +56,10 @@ jobs:
           keyvault: "nk-vault" # Name of the Key Vault
           secrets: "nk-name" # comma separated list of secret keys that need to be fetched from the Key Vault
 
-      - name: Display secrets
+      - name: Display secrets and variables
         run: |
-          echo "NK_NAME: ${{ steps.vault.outputs['nk-name'] }}"
+          echo "vault NK_NAME: ${{ steps.vault.outputs['nk-name'] }}"
+          echo "env variable name: ${{ vars.name }}"
 
       # Deploy Bicep Template
       # - name: Deploy Bicep Template
