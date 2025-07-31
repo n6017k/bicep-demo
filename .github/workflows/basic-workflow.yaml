@@ -2,9 +2,6 @@ name: bicep-deployment
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
 
 env:
   AZURE_RESOURCE_GROUP: "bicep-deployment-rg"
