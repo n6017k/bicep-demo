@@ -29,15 +29,3 @@ jobs:
       - name: check az cli version
         run: |
           az --version
-
-      - name: deploy bicep file using az cli
-        run: |
-          az deployment group create \
-          --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
-          --template-file main.bicep \
-          --parameters @main.parameters.json
-
-      - name: Output deployment result
-        run: |
-          echo "Deployment completed successfully."
-          az deployment group show --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name main --query properties.outputs -o json
