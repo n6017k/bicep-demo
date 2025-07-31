@@ -51,9 +51,16 @@ jobs:
         run: |
           echo "Display Repository Secrets: ${{ secrets.AZURE_CLIENT_ID }}"
 
-          - name: display environment variables
-          run: |
-            echo "Diaplay environment variables: ${{ vars.STAGE_VAR}}"
+      - name: get secret from key vault
+        id: vault
+        uses: Azure/get-keyvault-secrets@v1
+        with:
+          keyvault: "nk-vault" # Name of the Key Vault
+          secrets: "nk-name" # comma separated list of secret keys that need to be fetched from the Key Vault
+
+      - name: Display secrets
+        run: |
+          echo "NK_NAME: ${{ steps.vault.outputs['nk-name'] }}"
 
       # Deploy Bicep Template
       # - name: Deploy Bicep Template
