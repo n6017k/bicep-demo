@@ -60,6 +60,7 @@ jobs:
         run: |
           echo "vault NK_NAME: ${{ steps.vault.outputs['nk-name'] }}"
           echo "env variable name: ${{ vars.name }}"
+          echo "env variable stage: ${{ vars.STAGE }}"
 
       # Deploy Bicep Template
       # - name: Deploy Bicep Template
